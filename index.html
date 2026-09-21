@@ -1,0 +1,2335 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cuida+ | Plataforma Inteligente de Gestão Hospitalar em Tempo Real</title>
+    <meta name="description" content="Otimize leitos, reduza filas e previna gargalos com a plataforma SaaS de inteligência hospitalar do cuida+.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* Modern CSS Reset & Custom Design Tokens */
+        :root {
+            --primary: #0F52BA;
+            --primary-dark: #0A3A86;
+            --primary-light: #1D4ED8;
+            --accent: #0284C7;
+            --accent-green: #10B981;
+            --bg-light: #F8FAFC;
+            --bg-card: #FFFFFF;
+            --text-main: #0F172A;
+            --text-muted: #475569;
+            --border-color: #E2E8F0;
+            --shadow-sm: 0 2px 4px rgba(15, 82, 186, 0.04);
+            --shadow-md: 0 10px 25px -5px rgba(15, 82, 186, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            --shadow-lg: 0 20px 30px -10px rgba(15, 82, 186, 0.15);
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Helper Classes */
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.75rem;
+            font-weight: 700;
+            font-size: 1rem;
+            border-radius: 50px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            text-decoration: none;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: #FFFFFF;
+            box-shadow: 0 4px 14px rgba(15, 82, 186, 0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(15, 82, 186, 0.45);
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+        }
+
+        .btn-secondary {
+            background-color: #FFFFFF;
+            color: var(--primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            background-color: #EFF6FF;
+            transform: translateY(-2px);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.875rem;
+            background-color: #EFF6FF;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.85rem;
+            border-radius: 50px;
+            border: 1px solid #BFDBFE;
+        }
+
+        .badge-pulse {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-green);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .nav-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Mobile menu toggle */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .hero {
+            padding-top: 140px;
+            padding-bottom: 80px;
+            background: radial-gradient(circle at 50% 0%, #EFF6FF 0%, var(--bg-light) 70%);
+            position: relative;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3.5rem;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: 3.25rem;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -1px;
+            color: var(--text-main);
+            margin: 1.25rem 0;
+        }
+
+        .hero-content h1 .gradient-text {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .hero-cta-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .hero-stats-mini {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Interactive Dashboard Preview Container */
+        .dashboard-mockup {
+            background: #FFFFFF;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .mockup-header {
+            background-color: #0F172A;
+            padding: 0.75rem 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .dot-red { background-color: #EF4444; }
+        .dot-yellow { background-color: #F59E0B; }
+        .dot-green { background-color: #10B981; }
+
+        .mockup-title {
+            color: #94A3B8;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .mockup-body {
+            padding: 1.25rem;
+            background-color: #F8FAFC;
+        }
+
+        .dash-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .dash-card {
+            background-color: #FFFFFF;
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        .dash-card-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .dash-card-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .badge-alert {
+            background-color: #FEF2F2;
+            color: #EF4444;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .badge-success {
+            background-color: #ECFDF5;
+            color: #10B981;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .dash-bed-status {
+            background-color: #FFFFFF;
+            border-radius: var(--radius-sm);
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .bed-list {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .bed-item {
+            padding: 0.5rem;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .bed-occupied { background-color: #FEE2E2; color: #991B1B; }
+        .bed-available { background-color: #D1FAE5; color: #065F46; }
+        .bed-cleaning { background-color: #FEF3C7; color: #92400E; }
+
+        .section-padding {
+            padding: 6rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 3.5rem auto;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+        }
+
+        .problems-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .problem-card {
+            background: #FFFFFF;
+            padding: 2.25rem 1.75rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .problem-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: #BFDBFE;
+        }
+
+        .problem-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            background-color: #FEF2F2;
+            color: #EF4444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .problem-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text-main);
+        }
+
+        .problem-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .solution-section {
+            background-color: #FFFFFF;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .solution-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .feature-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .feature-icon-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background-color: #EFF6FF;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .feature-text h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.25rem;
+        }
+
+        .feature-text p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .solution-media {
+            position: relative;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .solution-media img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* ==========================================================================
+           GALERIA "cuida+ POR DENTRO" (3 ilustrações da plataforma)
+           ========================================================================== */
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .showcase-item {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .showcase-frame {
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid #BFDBFE;
+            box-shadow: var(--shadow-md);
+            background-color: #EFF6FF;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .showcase-item:hover .showcase-frame {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .showcase-frame svg {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .showcase-item h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .showcase-item p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-top: -0.75rem;
+        }
+
+        /* ==========================================================================
+           SEÇÃO DE VÍDEO + PLAYER ANIMADO
+           ========================================================================== */
+        .video-section {
+            background: linear-gradient(180deg, #0F172A 0%, #1E293B 100%);
+            color: #FFFFFF;
+            text-align: center;
+        }
+
+        .video-section .section-title h2 {
+            color: #FFFFFF;
+        }
+
+        .video-section .section-title p {
+            color: #94A3B8;
+        }
+
+        .video-note {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: #94A3B8;
+        }
+
+        .player {
+            --u: 9px; /* 1% da largura do vídeo (definido via JS) */
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid #334155;
+            background-color: #0A3A86;
+            aspect-ratio: 16 / 9;
+            user-select: none;
+            -webkit-user-select: none;
+            text-align: left;
+        }
+
+        .player:fullscreen {
+            aspect-ratio: auto;
+            max-width: none;
+            border-radius: 0;
+            border: 0;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .player:fullscreen .stage {
+            position: relative;
+            inset: auto;
+            width: min(100vw, 177.78vh);
+            height: min(56.25vw, 100vh);
+        }
+
+        .stage {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
+
+        .scene {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2.4em;
+            padding: 4em 6em 6em 6em;
+            font-size: var(--u);
+            line-height: 1.25;
+            text-align: center;
+            color: #FFFFFF;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+
+        .scene.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scene svg { flex-shrink: 0; }
+
+        /* Motion: só roda enquanto a cena está ativa (classe .on) */
+        .anim { opacity: 0; }
+        .scene.on .anim {
+            animation: fadeUp 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0s) both;
+        }
+        .scene.on .anim.pop {
+            animation-name: pop;
+            animation-timing-function: cubic-bezier(0.3, 1.5, 0.5, 1);
+        }
+        .player.paused .scene *,
+        .player.paused .scene {
+            animation-play-state: paused !important;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(1.6em); }
+            to   { opacity: 1; transform: none; }
+        }
+        @keyframes pop {
+            from { opacity: 0; transform: scale(0.4); }
+            to   { opacity: 1; transform: none; }
+        }
+
+        .sc-title {
+            font-size: 4.4em;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        /* Cena 1: o problema */
+        .s1 { background: linear-gradient(160deg, #0F172A 0%, #1E293B 100%); }
+        .s1-row { display: flex; gap: 3em; align-items: stretch; }
+        .glass {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 1.6em;
+            padding: 1.6em 2em;
+            text-align: left;
+        }
+        .glass-label {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #CBD5E1;
+            margin-bottom: 0.7em;
+        }
+        .people { display: flex; gap: 0.5em; }
+        .person { width: 2.4em; height: 3.2em; fill: #FCA5A5; }
+        .s1-beds { display: flex; gap: 0.6em; align-items: flex-end; height: 3.2em; }
+        .s1-beds i { display: block; width: 3.6em; height: 2.6em; border-radius: 0.5em; background: #EF4444; }
+        .s1-beds i.warn { background: #F59E0B; }
+        .scene.on .s1-beds i.warn { animation: blink 1.1s ease-in-out infinite; }
+        @keyframes blink { 50% { opacity: 0.35; } }
+        .chips { display: flex; gap: 1.2em; flex-wrap: wrap; justify-content: center; }
+        .chip {
+            font-size: 1.6em;
+            font-weight: 700;
+            padding: 0.5em 1em;
+            border-radius: 99px;
+            background: rgba(239, 68, 68, 0.16);
+            color: #FECACA;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+        }
+
+        /* Cena 2: marca */
+        .s2 { background: linear-gradient(135deg, #0F52BA 0%, #0A3A86 100%); }
+        .logo-big {
+            display: flex;
+            align-items: center;
+            gap: 0.14em;
+            font-size: 9em;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1;
+        }
+        .logo-big svg { width: 0.9em; height: 0.9em; }
+        .logo-big .plus { color: #7DD3FC; }
+        .s2 .tagline { font-size: 3.2em; font-weight: 700; color: #FFFFFF; }
+        .s2 .sub { font-size: 2.2em; font-weight: 500; color: #BFDBFE; margin-top: -1.2em; }
+
+        /* Cena 3: leitos em tempo real */
+        .s3 {
+            background: linear-gradient(135deg, #F8FAFC 0%, #DBEAFE 100%);
+            color: var(--text-main);
+            flex-direction: row;
+            gap: 4.5em;
+            padding: 4em 6em;
+        }
+        .s3-text { width: 34em; text-align: left; display: flex; flex-direction: column; gap: 1.6em; }
+        .s3-text .sc-title { font-size: 4em; color: var(--primary-dark); }
+        .s3-text p { font-size: 2em; font-weight: 500; color: var(--text-muted); line-height: 1.35; }
+        .panel {
+            width: 50em;
+            text-align: left;
+            background: #FFFFFF;
+            border: 1px solid #BFDBFE;
+            border-radius: 1.8em;
+            padding: 2em;
+            box-shadow: 0 2em 4em -1.5em rgba(15, 82, 186, 0.3);
+        }
+        .panel-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.8em;
+            font-weight: 800;
+            margin-bottom: 0.9em;
+        }
+        .live { font-size: 0.78em; font-weight: 700; color: #065F46; display: flex; align-items: center; gap: 0.5em; }
+        .live i { width: 0.6em; height: 0.6em; border-radius: 50%; background: #10B981; animation: pulse 2s infinite; }
+        .beds { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1em; }
+        .bed {
+            border-radius: 1em;
+            padding: 0.9em 1em;
+            background: var(--bg, #FEE2E2);
+            color: var(--fg, #991B1B);
+        }
+        .bed b { display: block; font-size: 1.9em; font-weight: 800; }
+        .bed .labs { position: relative; display: block; font-size: 1.4em; font-weight: 700; height: 1.3em; }
+        .bed .lab { position: absolute; left: 0; top: 0; white-space: nowrap; }
+        .bed.occ { --bg: #FEE2E2; --fg: #991B1B; }
+        .bed.free { --bg: #D1FAE5; --fg: #065F46; }
+        .bed.lim { --bg: #FEF3C7; --fg: #92400E; }
+        .bed .lab.b { opacity: 0; }
+        .scene.on .bed.chg { animation: bedChg 0.4s ease var(--t) both; }
+        .scene.on .bed.chg .lab.a { animation: hideLab 0.3s ease var(--t) both; }
+        .scene.on .bed.chg .lab.b { animation: showLab 0.3s ease var(--t) both; }
+        @keyframes bedChg { from { background: var(--fb); color: var(--ff); } to { background: var(--tb); color: var(--tf); } }
+        @keyframes hideLab { to { opacity: 0; } }
+        @keyframes showLab { to { opacity: 1; } }
+        .toast-zone { position: relative; height: 6.4em; margin-top: 1.4em; }
+        .toast {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            gap: 1.2em;
+            padding: 0 1.4em;
+            border-radius: 1.2em;
+            background: #EFF6FF;
+            border: 1px solid #BFDBFE;
+            opacity: 0;
+        }
+        .toast .ic { width: 3.4em; height: 3.4em; border-radius: 50%; display: grid; place-items: center; background: #10B981; color: #fff; flex-shrink: 0; }
+        .toast .ic.blue { background: var(--primary); }
+        .toast b { display: block; font-size: 1.8em; font-weight: 800; color: var(--text-main); }
+        .toast span { display: block; font-size: 1.4em; font-weight: 600; color: var(--text-muted); }
+        .scene.on .toast.t1 { animation: toastOut 3s ease var(--d) both; }
+        .scene.on .toast.t2 { animation: toastIn 0.5s ease var(--d) both; }
+        @keyframes toastOut {
+            0% { opacity: 0; transform: translateY(1em); }
+            10%, 85% { opacity: 1; transform: none; }
+            100% { opacity: 0; }
+        }
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(1em); }
+            to { opacity: 1; transform: none; }
+        }
+
+        /* Cena 4: fluxo */
+        .s4 { background: linear-gradient(160deg, #0A3A86 0%, #0F52BA 100%); }
+        .flow { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); width: 80em; margin-top: 1em; }
+        .track {
+            position: absolute;
+            top: 3.5em;
+            left: 12.5%;
+            right: 12.5%;
+            height: 0.4em;
+            margin-top: -0.2em;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.25);
+        }
+        .dot-travel {
+            position: absolute;
+            top: 2.2em;
+            left: 12.5%;
+            width: 2.6em;
+            height: 2.6em;
+            margin-left: -1.3em;
+            border-radius: 50%;
+            background: #38BDF8;
+            box-shadow: 0 0 0 0.8em rgba(56, 189, 248, 0.28);
+            z-index: 2;
+        }
+        .scene.on .dot-travel { animation: travel 7.2s linear 1.6s both; }
+        @keyframes travel { from { left: 12.5%; } to { left: 87.5%; } }
+        .node { display: flex; flex-direction: column; align-items: center; gap: 1em; text-align: center; padding: 0 0.6em; }
+        .node .circle {
+            width: 7em;
+            height: 7em;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            z-index: 1;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.14);
+            border: 0.3em solid rgba(255, 255, 255, 0.35);
+        }
+        .node .circle svg { width: 3.4em; height: 3.4em; }
+        .scene.on .node .circle { animation: nodeOn 0.5s ease var(--n) both; }
+        @keyframes nodeOn {
+            from { background: rgba(255, 255, 255, 0.14); color: #fff; border-color: rgba(255, 255, 255, 0.35); box-shadow: none; }
+            to { background: #fff; color: #0F52BA; border-color: #fff; box-shadow: 0 0 0 1em rgba(255, 255, 255, 0.15); }
+        }
+        .node b { font-size: 2em; font-weight: 800; }
+        .node .note {
+            font-size: 1.5em;
+            font-weight: 600;
+            padding: 0.4em 0.9em;
+            border-radius: 1em;
+            background: rgba(255, 255, 255, 0.14);
+            color: #DBEAFE;
+        }
+
+        /* Cena 5: metas */
+        .s5 { background: linear-gradient(135deg, #FFFFFF 0%, #EFF6FF 100%); color: var(--text-main); }
+        .s5 .sc-title { color: var(--primary-dark); }
+        .stats { display: flex; gap: 3em; }
+        .stat {
+            background: #fff;
+            border: 1px solid #BFDBFE;
+            border-radius: 2em;
+            padding: 2em 4em;
+            box-shadow: 0 2em 4em -2em rgba(15, 82, 186, 0.3);
+        }
+        .stat strong { display: block; font-size: 9em; font-weight: 800; letter-spacing: -0.03em; line-height: 1; color: var(--primary); }
+        .stat span { display: block; font-size: 2em; font-weight: 600; color: var(--text-muted); margin-top: 0.5em; max-width: 12em; }
+        .s5 .fine { font-size: 1.6em; font-weight: 500; color: var(--text-muted); max-width: 40em; }
+
+        /* Cena 6: convite */
+        .s6 { background: linear-gradient(135deg, #0F52BA 0%, #0A3A86 100%); }
+        .s6 .sc-title { font-size: 5.4em; max-width: 14em; }
+        .s6 p { font-size: 2.4em; font-weight: 500; color: #BFDBFE; max-width: 26em; }
+        .pill {
+            font-size: 2.2em;
+            font-weight: 800;
+            padding: 0.6em 1.6em;
+            border-radius: 99px;
+            background: #fff;
+            color: var(--primary);
+        }
+
+        /* Pôster (antes de dar play) */
+        .poster {
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.4rem;
+            border: 0;
+            cursor: pointer;
+            color: #fff;
+            background:
+                radial-gradient(circle at 80% 15%, rgba(125, 211, 252, 0.35) 0%, transparent 45%),
+                linear-gradient(135deg, #0F52BA 0%, #0A3A86 100%);
+            transition: opacity 0.4s ease, visibility 0.4s;
+        }
+        .player.started .poster { opacity: 0; visibility: hidden; pointer-events: none; }
+        .poster-logo { display: flex; align-items: center; gap: 0.6rem; font-size: clamp(2rem, 6vw, 4rem); font-weight: 800; letter-spacing: -0.03em; }
+        .poster-logo span { color: #7DD3FC; }
+        .poster-logo svg { width: 0.9em; height: 0.9em; }
+        .play-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #fff;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 0 10px rgba(255, 255, 255, 0.2), 0 0 40px rgba(2, 132, 199, 0.6);
+            transition: transform 0.3s ease;
+        }
+        .poster:hover .play-btn { transform: scale(1.1); }
+        .poster-label { font-weight: 700; letter-spacing: 0.3px; }
+
+        /* Controles */
+        .controls {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 4;
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.6rem 1rem 0.7rem 1rem;
+            background: linear-gradient(to top, rgba(2, 6, 23, 0.8), rgba(2, 6, 23, 0));
+            color: #fff;
+        }
+        .player.started .controls { display: flex; }
+        .pc-btn {
+            width: 36px;
+            height: 36px;
+            flex-shrink: 0;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            border: 0;
+            background: rgba(255, 255, 255, 0.16);
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        .pc-btn:hover { background: rgba(255, 255, 255, 0.3); }
+        .pc-btn:focus-visible, .poster:focus-visible, .pwrap:focus-visible { outline: 3px solid #7DD3FC; outline-offset: 2px; }
+        .pwrap { flex: 1; padding: 12px 0; cursor: pointer; touch-action: none; border-radius: 6px; }
+        .pbar { position: relative; height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.3); }
+        .pfill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 3px; background: #38BDF8; }
+        .ptick { position: absolute; top: -1px; bottom: -1px; width: 2px; background: rgba(15, 23, 42, 0.55); }
+        .ptime { font-size: 0.8rem; font-weight: 600; min-width: 84px; text-align: right; font-variant-numeric: tabular-nums; }
+        .ico-pause, .ico-replay { display: none; }
+        .player.playing .ico-play { display: none; }
+        .player.playing .ico-pause { display: block; }
+        .player.ended .ico-play, .player.ended .ico-pause { display: none; }
+        .player.ended .ico-replay { display: block; }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .relatos-note {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            max-width: 820px;
+            margin: -1.5rem auto 2.5rem auto;
+            padding: 0.875rem 1.25rem;
+            background-color: #EFF6FF;
+            border: 1px solid #BFDBFE;
+            border-radius: var(--radius-sm);
+            color: var(--primary-dark);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .relatos-note svg { flex-shrink: 0; margin-top: 2px; }
+
+        .testimonial-card {
+            background: #FFFFFF;
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 1.5rem;
+        }
+
+        .relato-tag {
+            display: inline-block;
+            margin-bottom: 1rem;
+            padding: 0.2rem 0.7rem;
+            border-radius: 50px;
+            background-color: #F1F5F9;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .testimonial-text {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .author-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #EFF6FF;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .author-details h5 {
+            font-weight: 700;
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        .author-details p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        .pricing-card {
+            background-color: #FFFFFF;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem 2rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card.popular {
+            border: 2px solid var(--primary);
+            box-shadow: var(--shadow-lg);
+            transform: scale(1.03);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary);
+            color: #FFFFFF;
+            padding: 4px 16px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .plan-name {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-desc {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            min-height: 40px;
+        }
+
+        .plan-price {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .plan-price span {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.875rem;
+        }
+
+        .plan-features li {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-section {
+            background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+            border-top: 1px solid #BFDBFE;
+            position: relative;
+        }
+
+        .form-container-card {
+            background: #FFFFFF;
+            border-radius: var(--radius-lg);
+            padding: 3rem 2.5rem;
+            box-shadow: var(--shadow-lg);
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid var(--border-color);
+        }
+
+        .counter-box {
+            text-align: center;
+            background-color: #EFF6FF;
+            border: 1px solid #BFDBFE;
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .counter-number {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .form-group label {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(15, 82, 186, 0.15);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            margin-top: 1rem;
+            padding: 1.1rem;
+            font-size: 1.1rem;
+        }
+
+        /* Success Message Overlay */
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .success-icon {
+            width: 72px;
+            height: 72px;
+            background-color: #D1FAE5;
+            color: #10B981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem auto;
+        }
+
+        .success-message h3 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 0.75rem;
+        }
+
+        .success-message p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        footer {
+            background-color: #0F172A;
+            color: #94A3B8;
+            padding: 4rem 0 2rem 0;
+            border-top: 1px solid #1E293B;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-logo {
+            color: #FFFFFF;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .footer-logo span {
+            color: var(--accent);
+        }
+
+        .footer-links h5 {
+            color: #FFFFFF;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .footer-links a {
+            color: #94A3B8;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: #FFFFFF;
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid #1E293B;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            .hero-grid, .solution-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+            .hero-content {
+                text-align: center;
+            }
+            .hero-cta-group {
+                justify-content: center;
+            }
+            .hero-stats-mini {
+                justify-content: center;
+            }
+            .problems-grid, .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+            .showcase-grid {
+                grid-template-columns: 1fr;
+                max-width: 640px;
+                margin: 0 auto;
+            }
+            .testimonials-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .pricing-card.popular {
+                transform: scale(1);
+            }
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero-content h1 {
+                font-size: 2.25rem;
+            }
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            .nav-links {
+                display: none;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            .play-btn {
+                width: 60px;
+                height: 60px;
+            }
+            .ptime {
+                min-width: 70px;
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <nav class="nav-wrapper">
+                <a href="#" class="logo">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="32" height="32" rx="8" fill="#0F52BA"/>
+                        <path d="M16 8V24M8 16H24" stroke="white" stroke-width="4" stroke-linecap="round"/>
+                    </svg>
+                    cuida<span>+</span>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="#problema">O Problema</a></li>
+                    <li><a href="#solucao">A Solução</a></li>
+                    <li><a href="#demonstracao">Demonstração</a></li>
+                    <li><a href="#depoimentos">Relatos</a></li>
+                    <li><a href="#planos">Planos</a></li>
+                </ul>
+                <a href="#cadastro" class="btn btn-primary">Garantir Acesso Antecipado</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-grid">
+                    <div class="hero-content">
+                        <div class="badge">
+                            <span class="badge-pulse"></span>
+                            Programa de Acesso Antecipado Exclusivo
+                        </div>
+                        <h1>Transforme a <span class="gradient-text">Gestão Hospitalar</span> em Tempo Real</h1>
+                        <p>Elimine gargalos de atendimento, otimize a rotatividade de leitos e proporcione tomadas de decisão ágeis para a sua equipe médica com inteligência preditiva.</p>
+                        <div class="hero-cta-group">
+                            <a href="#cadastro" class="btn btn-primary">
+                                Solicitar Demonstrativo VIP
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </a>
+                            <a href="#demonstracao" class="btn btn-secondary" onclick="setTimeout(function(){ if (window.cuidaPlayer) cuidaPlayer.play(); }, 600);">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+                                Ver Vídeo (52 s)
+                            </a>
+                        </div>
+                        <div class="hero-stats-mini">
+                            <div class="stat-item">
+                                <span class="stat-value">-35%</span>
+                                <span class="stat-label">Tempo de espera em prontos-socorros</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value">+28%</span>
+                                <span class="stat-label">Eficiência na giros de leito</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Dashboard Mockup Simulation -->
+                    <div class="dashboard-mockup">
+                        <div class="mockup-header">
+                            <div class="dots">
+                                <div class="dot dot-red"></div>
+                                <div class="dot dot-yellow"></div>
+                                <div class="dot dot-green"></div>
+                            </div>
+                            <div class="mockup-title">cuida+ Command Center v2.4 (Tempo Real)</div>
+                        </div>
+                        <div class="mockup-body">
+                            <div class="dash-grid">
+                                <div class="dash-card">
+                                    <div class="dash-card-header">
+                                        <span>OCUPAÇÃO DE LEITOS</span>
+                                        <span class="badge-alert">ALERTA 92%</span>
+                                    </div>
+                                    <div class="dash-card-value">184 / 200</div>
+                                </div>
+                                <div class="dash-card">
+                                    <div class="dash-card-header">
+                                        <span>TEMPO MÉDIO HIGIENIZAÇÃO</span>
+                                        <span class="badge-success">-18 min</span>
+                                    </div>
+                                    <div class="dash-card-value">24 min</div>
+                                </div>
+                            </div>
+                            <div class="dash-bed-status">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                    <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">STATUS DE LEITOS - UTI A</span>
+                                    <span style="font-size: 0.75rem; color: var(--primary); font-weight: 600;">Atualizado agora</span>
+                                </div>
+                                <div class="bed-list">
+                                    <div class="bed-item bed-occupied">L-01 (OCU)</div>
+                                    <div class="bed-item bed-occupied">L-02 (OCU)</div>
+                                    <div class="bed-item bed-available">L-03 (LIV)</div>
+                                    <div class="bed-item bed-cleaning">L-04 (HIG)</div>
+                                    <div class="bed-item bed-occupied">L-05 (OCU)</div>
+                                    <div class="bed-item bed-available">L-06 (LIV)</div>
+                                    <div class="bed-item bed-occupied">L-07 (OCU)</div>
+                                    <div class="bed-item bed-occupied">L-08 (OCU)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="problema" class="section-padding">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Os Desafios Ocultos da Gestão Hospitalar Hoje</h2>
+                    <p>A falta de visibilidade em tempo real gera ineficiência operacional, aumenta os custos e impacta diretamente a qualidade do atendimento prestado ao paciente.</p>
+                </div>
+                <div class="problems-grid">
+                    <div class="problem-card">
+                        <div class="problem-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                        </div>
+                        <h3>Gargalos e Leitos Ociosos</h3>
+                        <p>Atrasos na liberação e na higienização de leitos provocam retenção em macas do PS e perda substancial de capacidade operacional do hospital.</p>
+                    </div>
+                    <div class="problem-card">
+                        <div class="problem-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        </div>
+                        <h3>Filas Longas no Atendimento</h3>
+                        <p>A lentidão na comunicação entre triagem, recepção e equipe médica causa sobrecarga do pronto-socorro e insatisfação dos pacientes.</p>
+                    </div>
+                    <div class="problem-card">
+                        <div class="problem-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        </div>
+                        <h3>Comunicação Fragmentada</h3>
+                        <p>Sistemas legados e processos manuais em papel criam ilhas de informação, resultando em decisões lentas por parte dos gestores.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="solucao" class="section-padding solution-section">
+            <div class="container">
+                <div class="solution-grid">
+                    <div>
+                        <div class="badge">A Solução cuida+</div>
+                        <h2 style="font-size: 2.25rem; font-weight: 800; margin: 1rem 0; color: var(--text-main);">Visibilidade 360° para Decisões Ágeis e Eficientes</h2>
+                        <p style="color: var(--text-muted); font-size: 1.05rem;">A centralização do fluxo de pacientes e ocupação do hospital em uma única interface preditiva e extremamente intuitiva.</p>
+                        
+                        <ul class="feature-list">
+                            <li class="feature-item">
+                                <div class="feature-icon-box">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                                </div>
+                                <div class="feature-text">
+                                    <h4>Monitoramento em Tempo Real</h4>
+                                    <p>Acompanhe o status exato de cada leito, do recebimento ao pós-alta do paciente.</p>
+                                </div>
+                            </li>
+                            <li class="feature-item">
+                                <div class="feature-icon-box">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                                </div>
+                                <div class="feature-text">
+                                    <h4>Alertas Inteligentes de Gargalo</h4>
+                                    <p>Notificações automatizadas para equipes de limpeza, enfermagem e corpo clínico.</p>
+                                </div>
+                            </li>
+                            <li class="feature-item">
+                                <div class="feature-icon-box">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                                </div>
+                                <div class="feature-text">
+                                    <h4>Relatórios Executivos Preditivos</h4>
+                                    <p>Métricas precisas para diretores otimizarem custos operacionais e alocação de equipe.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="solution-media">
+                        <img src="https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=800&q=80" alt="Gestor hospitalar analisando dados no tablet com equipe de saúde" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== NOVO: 3 IMAGENS "cuida+ POR DENTRO" ==================== -->
+        <section id="por-dentro" class="section-padding">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Veja o cuida+ por Dentro</h2>
+                    <p>Três telas que mostram como a plataforma organiza o dia a dia do hospital, do leito à diretoria.</p>
+                </div>
+                <div class="showcase-grid">
+                    <figure class="showcase-item">
+                        <div class="showcase-frame"><svg viewBox="0 0 640 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="i1-t i1-d">
+<title id="i1-t">Painel de leitos em tempo real</title><desc id="i1-d">Painel do cuida+ mostrando leitos da UTI A como livres, ocupados ou em higienização.</desc>
+<defs>
+<linearGradient id="i1-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EFF6FF"/><stop offset="1" stop-color="#BFDBFE"/></linearGradient>
+<linearGradient id="i1-br" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0F52BA"/><stop offset="1" stop-color="#0284C7"/></linearGradient>
+<filter id="i1-sh" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="8" stdDeviation="9" flood-color="#0F52BA" flood-opacity=".22"/></filter>
+</defs>
+<rect width="640" height="440" rx="24" fill="url(#i1-bg)"/>
+<circle cx="560" cy="60" r="90" fill="#fff" opacity=".35"/><circle cx="70" cy="400" r="110" fill="#fff" opacity=".3"/>
+
+<g filter="url(#i1-sh)">
+<rect x="64" y="40" width="512" height="330" rx="20" fill="#0F172A"/>
+<rect x="78" y="54" width="484" height="302" rx="12" fill="#F8FAFC"/>
+</g>
+<rect x="286" y="370" width="68" height="22" fill="#94A3B8"/><rect x="230" y="390" width="180" height="12" rx="6" fill="#64748B"/>
+<text x="100" y="86" font-size="15" font-weight="800" fill="#0F172A">UTI A · status dos leitos</text>
+<rect x="424" y="70" width="120" height="24" rx="12" fill="#ECFDF5"/><circle cx="440" cy="82" r="4.5" fill="#10B981"/>
+<text x="451" y="86" font-size="10.5" font-weight="700" fill="#065F46">Atualizado agora</text>
+<rect x="100" y="106" width="218" height="70" rx="12" fill="#fff" stroke="#E2E8F0"/>
+<text x="116" y="128" font-size="10.5" font-weight="700" fill="#475569">Ocupação de leitos</text>
+<text x="116" y="160" font-size="26" font-weight="800" fill="#0F172A">92%</text>
+<rect x="196" y="140" width="106" height="8" rx="4" fill="#E2E8F0"/><rect x="196" y="140" width="98" height="8" rx="4" fill="#EF4444"/>
+<rect x="326" y="106" width="218" height="70" rx="12" fill="#fff" stroke="#E2E8F0"/>
+<text x="342" y="128" font-size="10.5" font-weight="700" fill="#475569">Tempo médio de higienização</text>
+<text x="342" y="160" font-size="26" font-weight="800" fill="#0F172A">24 min</text>
+<rect x="452" y="140" width="76" height="20" rx="6" fill="#ECFDF5"/><text x="462" y="154" font-size="10.5" font-weight="800" fill="#059669">−18 min</text>
+<rect x="104" y="196" width="102" height="38" rx="9" fill="#FEE2E2"/><text x="114" y="212" font-size="12" font-weight="800" fill="#991B1B">L-01</text><text x="114" y="226" font-size="10" font-weight="600" fill="#991B1B">Ocupado</text><rect x="214" y="196" width="102" height="38" rx="9" fill="#FEE2E2"/><text x="224" y="212" font-size="12" font-weight="800" fill="#991B1B">L-02</text><text x="224" y="226" font-size="10" font-weight="600" fill="#991B1B">Ocupado</text><rect x="324" y="196" width="102" height="38" rx="9" fill="#D1FAE5"/><text x="334" y="212" font-size="12" font-weight="800" fill="#065F46">L-03</text><text x="334" y="226" font-size="10" font-weight="600" fill="#065F46">Livre</text><rect x="434" y="196" width="102" height="38" rx="9" fill="#FEF3C7"/><text x="444" y="212" font-size="12" font-weight="800" fill="#92400E">L-04</text><text x="444" y="226" font-size="10" font-weight="600" fill="#92400E">Higienização</text><rect x="104" y="242" width="102" height="38" rx="9" fill="#FEE2E2"/><text x="114" y="258" font-size="12" font-weight="800" fill="#991B1B">L-05</text><text x="114" y="272" font-size="10" font-weight="600" fill="#991B1B">Ocupado</text><rect x="214" y="242" width="102" height="38" rx="9" fill="#D1FAE5"/><text x="224" y="258" font-size="12" font-weight="800" fill="#065F46">L-06</text><text x="224" y="272" font-size="10" font-weight="600" fill="#065F46">Livre</text><rect x="324" y="242" width="102" height="38" rx="9" fill="#FEE2E2"/><text x="334" y="258" font-size="12" font-weight="800" fill="#991B1B">L-07</text><text x="334" y="272" font-size="10" font-weight="600" fill="#991B1B">Ocupado</text><rect x="434" y="242" width="102" height="38" rx="9" fill="#FEE2E2"/><text x="444" y="258" font-size="12" font-weight="800" fill="#991B1B">L-08</text><text x="444" y="272" font-size="10" font-weight="600" fill="#991B1B">Ocupado</text><rect x="104" y="288" width="102" height="38" rx="9" fill="#D1FAE5"/><text x="114" y="304" font-size="12" font-weight="800" fill="#065F46">L-09</text><text x="114" y="318" font-size="10" font-weight="600" fill="#065F46">Livre</text><rect x="214" y="288" width="102" height="38" rx="9" fill="#FEE2E2"/><text x="224" y="304" font-size="12" font-weight="800" fill="#991B1B">L-10</text><text x="224" y="318" font-size="10" font-weight="600" fill="#991B1B">Ocupado</text><rect x="324" y="288" width="102" height="38" rx="9" fill="#FEF3C7"/><text x="334" y="304" font-size="12" font-weight="800" fill="#92400E">L-11</text><text x="334" y="318" font-size="10" font-weight="600" fill="#92400E">Higienização</text><rect x="434" y="288" width="102" height="38" rx="9" fill="#FEE2E2"/><text x="444" y="304" font-size="12" font-weight="800" fill="#991B1B">L-12</text><text x="444" y="318" font-size="10" font-weight="600" fill="#991B1B">Ocupado</text>
+<g filter="url(#i1-sh)">
+<rect x="404" y="344" width="206" height="54" rx="14" fill="#fff"/>
+<circle cx="432" cy="371" r="14" fill="#10B981"/><path d="M425 371l5 5 9-10" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="454" y="367" font-size="12" font-weight="800" fill="#0F172A">Leito L-04 liberado</text>
+<text x="454" y="383" font-size="10.5" font-weight="600" fill="#475569">Pronto-Socorro avisado</text>
+</g>
+</svg></div>
+                        <figcaption>
+                            <h3>Painel de leitos ao vivo</h3>
+                        </figcaption>
+                        <p>Livre, ocupado ou em higienização: o status de cada leito muda na tela assim que muda no andar.</p>
+                    </figure>
+                    <figure class="showcase-item">
+                        <div class="showcase-frame"><svg viewBox="0 0 640 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="i2-t i2-d">
+<title id="i2-t">Alertas inteligentes de gargalo</title><desc id="i2-d">Celular com notificações do cuida+ avisando higienização, pronto-socorro e enfermagem.</desc>
+<defs>
+<linearGradient id="i2-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EFF6FF"/><stop offset="1" stop-color="#BFDBFE"/></linearGradient>
+<linearGradient id="i2-br" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0F52BA"/><stop offset="1" stop-color="#0284C7"/></linearGradient>
+<filter id="i2-sh" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="8" stdDeviation="9" flood-color="#0F52BA" flood-opacity=".22"/></filter>
+</defs>
+<rect width="640" height="440" rx="24" fill="url(#i2-bg)"/>
+<circle cx="560" cy="60" r="90" fill="#fff" opacity=".35"/><circle cx="70" cy="400" r="110" fill="#fff" opacity=".3"/>
+
+<g filter="url(#i2-sh)">
+<rect x="222" y="26" width="196" height="388" rx="34" fill="#0F172A"/>
+<rect x="232" y="40" width="176" height="360" rx="26" fill="#F8FAFC"/>
+<rect x="288" y="46" width="64" height="8" rx="4" fill="#0F172A"/>
+</g>
+<rect x="246" y="66" width="24" height="24" rx="7" fill="#0F52BA"/><path d="M258 71v14M251 78h14" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+<text x="277" y="84" font-size="15" font-weight="800" fill="#0F52BA">cuida<tspan fill="#0284C7">+</tspan></text>
+<circle cx="384" cy="78" r="12" fill="#EFF6FF"/><path d="M384 71a5 5 0 0 0-5 5c0 5-2 6-2 6h14s-2-1-2-6a5 5 0 0 0-5-5z" fill="#0F52BA"/>
+<circle cx="391" cy="70" r="6" fill="#EF4444"/><text x="391" y="73" font-size="8" font-weight="800" fill="#fff" text-anchor="middle">3</text>
+<rect x="240" y="108" width="160" height="66" rx="12" fill="#fff" stroke="#E2E8F0"/>
+<rect x="240" y="108" width="5" height="66" rx="2.5" fill="#10B981"/>
+<circle cx="266" cy="141" r="15" fill="#10B981" opacity=".15"/><path d="M259 141l5 5 9-10" stroke="#10B981" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="288" y="137" font-size="11.5" font-weight="800" fill="#0F172A">Higienização</text>
+<text x="288" y="153" font-size="9.5" font-weight="600" fill="#475569">L-04 pronto para uso</text>
+<rect x="240" y="188" width="160" height="66" rx="12" fill="#fff" stroke="#E2E8F0"/>
+<rect x="240" y="188" width="5" height="66" rx="2.5" fill="#F59E0B"/>
+<circle cx="266" cy="221" r="15" fill="#F59E0B" opacity=".15"/><circle cx="266" cy="221" r="8" fill="none" stroke="#F59E0B" stroke-width="2.5"/><path d="M266 217v4l3 2" stroke="#F59E0B" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+<text x="288" y="217" font-size="11.5" font-weight="800" fill="#0F172A">Pronto-Socorro</text>
+<text x="288" y="233" font-size="9.5" font-weight="600" fill="#475569">2 pacientes na fila</text>
+<rect x="240" y="268" width="160" height="66" rx="12" fill="#fff" stroke="#E2E8F0"/>
+<rect x="240" y="268" width="5" height="66" rx="2.5" fill="#0F52BA"/>
+<circle cx="266" cy="301" r="15" fill="#0F52BA" opacity=".15"/><path d="M259 301h14M266 294v14" stroke="#0F52BA" stroke-width="3" stroke-linecap="round"/>
+<text x="288" y="297" font-size="11.5" font-weight="800" fill="#0F172A">Enfermagem</text>
+<text x="288" y="313" font-size="9.5" font-weight="600" fill="#475569">Alta no L-07</text>
+<rect x="246" y="352" width="148" height="30" rx="15" fill="url(#i2-br)"/>
+<text x="320" y="371" font-size="11.5" font-weight="800" fill="#fff" text-anchor="middle">Ver todos os alertas</text>
+<path d="M222 141 C 200 141 210 130 202 130" stroke="#0F52BA" stroke-width="2" stroke-dasharray="5 5" fill="none" opacity=".5"/>
+<path d="M418 250 C 430 250 428 266 438 266" stroke="#0F52BA" stroke-width="2" stroke-dasharray="5 5" fill="none" opacity=".5"/>
+<g filter="url(#i2-sh)">
+<rect x="22" y="104" width="180" height="52" rx="14" fill="#fff"/>
+<circle cx="48" cy="130" r="13" fill="#D1FAE5"/><path d="M42 130l4 4 8-9" stroke="#059669" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="68" y="127" font-size="11.5" font-weight="800" fill="#0F172A">Limpeza notificada</text>
+<text x="68" y="143" font-size="10" font-weight="600" fill="#475569">há poucos segundos</text>
+</g>
+<g filter="url(#i2-sh)">
+<rect x="438" y="240" width="184" height="52" rx="14" fill="#fff"/>
+<circle cx="464" cy="266" r="13" fill="#DBEAFE"/><path d="M458 266h12M464 260v12" stroke="#0F52BA" stroke-width="2.8" stroke-linecap="round"/>
+<text x="484" y="263" font-size="11.5" font-weight="800" fill="#0F172A">Médico notificado</text>
+<text x="484" y="279" font-size="10" font-weight="600" fill="#475569">Leito disponível no PS</text>
+</g>
+</svg></div>
+                        <figcaption>
+                            <h3>Alertas para a equipe certa</h3>
+                        </figcaption>
+                        <p>Quando um leito é liberado, higienização, enfermagem e pronto-socorro recebem o aviso no celular.</p>
+                    </figure>
+                    <figure class="showcase-item">
+                        <div class="showcase-frame"><svg viewBox="0 0 640 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="i3-t i3-d">
+<title id="i3-t">Relatórios executivos preditivos</title><desc id="i3-d">Gráfico do cuida+ com ocupação realizada e prevista e uma sugestão de ação para a gestão.</desc>
+<defs>
+<linearGradient id="i3-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EFF6FF"/><stop offset="1" stop-color="#BFDBFE"/></linearGradient>
+<linearGradient id="i3-br" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0F52BA"/><stop offset="1" stop-color="#0284C7"/></linearGradient>
+<filter id="i3-sh" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="8" stdDeviation="9" flood-color="#0F52BA" flood-opacity=".22"/></filter>
+</defs>
+<rect width="640" height="440" rx="24" fill="url(#i3-bg)"/>
+<circle cx="560" cy="60" r="90" fill="#fff" opacity=".35"/><circle cx="70" cy="400" r="110" fill="#fff" opacity=".3"/>
+
+<g filter="url(#i3-sh)"><rect x="34" y="34" width="572" height="372" rx="22" fill="#fff"/></g>
+<text x="60" y="72" font-size="16" font-weight="800" fill="#0F172A">Ocupação prevista · próximas horas</text>
+<text x="60" y="92" font-size="11" font-weight="600" fill="#475569">Barras cheias: realizado · tracejadas: previsão do cuida+</text>
+<line x1="84" y1="318" x2="396" y2="318" stroke="#E2E8F0"/><line x1="84" y1="268" x2="396" y2="268" stroke="#E2E8F0"/><line x1="84" y1="218" x2="396" y2="218" stroke="#E2E8F0"/><line x1="84" y1="168" x2="396" y2="168" stroke="#E2E8F0"/><line x1="84" y1="118" x2="396" y2="118" stroke="#E2E8F0"/><rect x="96" y="226" width="16" height="92" rx="6" fill="url(#i3-br)"/><rect x="120" y="214" width="16" height="104" rx="6" fill="url(#i3-br)"/><rect x="144" y="200" width="16" height="118" rx="6" fill="url(#i3-br)"/><rect x="168" y="208" width="16" height="110" rx="6" fill="url(#i3-br)"/><rect x="192" y="192" width="16" height="126" rx="6" fill="url(#i3-br)"/><rect x="216" y="180" width="16" height="138" rx="6" fill="url(#i3-br)"/><rect x="240" y="170" width="16" height="148" rx="6" fill="url(#i3-br)"/><rect x="264" y="176" width="16" height="142" rx="6" fill="url(#i3-br)"/><rect x="288" y="198" width="16" height="120" rx="6" fill="#DBEAFE" stroke="#0F52BA" stroke-width="1.6" stroke-dasharray="4 3"/><rect x="312" y="186" width="16" height="132" rx="6" fill="#DBEAFE" stroke="#0F52BA" stroke-width="1.6" stroke-dasharray="4 3"/><rect x="336" y="162" width="16" height="156" rx="6" fill="#DBEAFE" stroke="#0F52BA" stroke-width="1.6" stroke-dasharray="4 3"/><rect x="360" y="148" width="16" height="170" rx="6" fill="#DBEAFE" stroke="#0F52BA" stroke-width="1.6" stroke-dasharray="4 3"/>
+<polyline points="104.0,212 128.0,200 152.0,186 176.0,194 200.0,178 224.0,166 248.0,156 272.0,162 296.0,184 320.0,172 344.0,148 368.0,134" fill="none" stroke="#0284C7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>
+<text x="104.0" y="338" font-size="9.5" font-weight="600" fill="#475569" text-anchor="middle">07h</text><text x="176.0" y="338" font-size="9.5" font-weight="600" fill="#475569" text-anchor="middle">10h</text><text x="248.0" y="338" font-size="9.5" font-weight="600" fill="#475569" text-anchor="middle">13h</text><text x="296.0" y="338" font-size="9.5" font-weight="600" fill="#475569" text-anchor="middle">15h</text><text x="368.0" y="338" font-size="9.5" font-weight="600" fill="#475569" text-anchor="middle">18h</text>
+<rect x="418" y="112" width="172" height="86" rx="14" fill="#EFF6FF" stroke="#BFDBFE"/>
+<text x="434" y="136" font-size="10.5" font-weight="700" fill="#475569">Pico previsto</text>
+<text x="434" y="166" font-size="26" font-weight="800" fill="#0F52BA">18h</text>
+<text x="434" y="186" font-size="10.5" font-weight="600" fill="#475569">demanda acima da média</text>
+<rect x="418" y="212" width="172" height="98" rx="14" fill="#F8FAFC" stroke="#E2E8F0"/>
+<circle cx="440" cy="236" r="10" fill="#D1FAE5"/><path d="M435 236l3.5 3.5 6-7" stroke="#059669" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="458" y="240" font-size="11.5" font-weight="800" fill="#0F172A">Sugestão</text>
+<text x="434" y="262" font-size="10.5" font-weight="600" fill="#475569">Reforçar a higienização</text>
+<text x="434" y="278" font-size="10.5" font-weight="600" fill="#475569">antes do pico e liberar</text>
+<text x="434" y="294" font-size="10.5" font-weight="600" fill="#475569">leitos com antecedência.</text>
+<rect x="418" y="324" width="172" height="58" rx="14" fill="url(#i3-br)"/>
+<text x="504" y="349" font-size="12" font-weight="800" fill="#fff" text-anchor="middle">Relatório executivo</text>
+<text x="504" y="367" font-size="10.5" font-weight="600" fill="#DBEAFE" text-anchor="middle">pronto para a diretoria</text>
+</svg></div>
+                        <figcaption>
+                            <h3>Previsão para a diretoria</h3>
+                        </figcaption>
+                        <p>Ocupação prevista e sugestões de ação para reforçar equipes antes do horário de pico.</p>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== NOVO: VÍDEO ANIMADO (sem dependência externa) ==================== -->
+        <section id="demonstracao" class="section-padding video-section">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Veja a Plataforma em Ação</h2>
+                    <p>Entenda em menos de 1 minuto como a plataforma cuida+ simplifica a rotina das equipes de saúde.</p>
+                </div>
+
+                <div class="player paused" id="player" role="region" aria-label="Vídeo de demonstração do cuida+">
+                    <div class="stage" id="stage">
+
+                        <!-- Cena 1 · o problema -->
+                        <div class="scene s1">
+                            <h3 class="sc-title anim" style="--d:.3s">Hospital cheio.<br>Informação espalhada.</h3>
+                            <div class="s1-row">
+                                <div class="glass anim" style="--d:1s">
+                                    <div class="glass-label">Fila no pronto-socorro</div>
+                                    <div class="people"><svg class="person anim pop" style="--d:1.50s" viewBox="0 0 24 32"><circle cx="12" cy="8" r="6"/><path d="M2 30c0-8 4-13 10-13s10 5 10 13z"/></svg><svg class="person anim pop" style="--d:1.80s" viewBox="0 0 24 32"><circle cx="12" cy="8" r="6"/><path d="M2 30c0-8 4-13 10-13s10 5 10 13z"/></svg><svg class="person anim pop" style="--d:2.10s" viewBox="0 0 24 32"><circle cx="12" cy="8" r="6"/><path d="M2 30c0-8 4-13 10-13s10 5 10 13z"/></svg><svg class="person anim pop" style="--d:2.40s" viewBox="0 0 24 32"><circle cx="12" cy="8" r="6"/><path d="M2 30c0-8 4-13 10-13s10 5 10 13z"/></svg><svg class="person anim pop" style="--d:2.70s" viewBox="0 0 24 32"><circle cx="12" cy="8" r="6"/><path d="M2 30c0-8 4-13 10-13s10 5 10 13z"/></svg><svg class="person anim pop" style="--d:3.00s" viewBox="0 0 24 32"><circle cx="12" cy="8" r="6"/><path d="M2 30c0-8 4-13 10-13s10 5 10 13z"/></svg><svg class="person anim pop" style="--d:3.30s" viewBox="0 0 24 32"><circle cx="12" cy="8" r="6"/><path d="M2 30c0-8 4-13 10-13s10 5 10 13z"/></svg><svg class="person anim pop" style="--d:3.60s" viewBox="0 0 24 32"><circle cx="12" cy="8" r="6"/><path d="M2 30c0-8 4-13 10-13s10 5 10 13z"/></svg><svg class="person anim pop" style="--d:3.90s" viewBox="0 0 24 32"><circle cx="12" cy="8" r="6"/><path d="M2 30c0-8 4-13 10-13s10 5 10 13z"/></svg><svg class="person anim pop" style="--d:4.20s" viewBox="0 0 24 32"><circle cx="12" cy="8" r="6"/><path d="M2 30c0-8 4-13 10-13s10 5 10 13z"/></svg></div>
+                                </div>
+                                <div class="glass anim" style="--d:1.3s">
+                                    <div class="glass-label">Leitos</div>
+                                    <div class="s1-beds"><i class="anim pop " style="--d:1.80s"></i><i class="anim pop " style="--d:1.95s"></i><i class="anim pop " style="--d:2.10s"></i><i class="anim pop warn" style="--d:2.25s"></i><i class="anim pop " style="--d:2.40s"></i><i class="anim pop " style="--d:2.55s"></i></div>
+                                </div>
+                            </div>
+                            <div class="chips">
+                                <span class="chip anim" style="--d:4.6s">Leito vazio esperando limpeza</span>
+                                <span class="chip anim" style="--d:5.8s">Fila crescendo</span>
+                                <span class="chip anim" style="--d:7s">Papel, rádio e telefone</span>
+                            </div>
+                        </div>
+
+                        <!-- Cena 2 · a marca -->
+                        <div class="scene s2">
+                            <div class="logo-big anim pop" style="--d:.2s">
+                                <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#fff"/><path d="M16 8V24M8 16H24" stroke="#0F52BA" stroke-width="4" stroke-linecap="round"/></svg>
+                                <span>cuida<span class="plus">+</span></span>
+                            </div>
+                            <div class="tagline anim" style="--d:1.2s">Gestão hospitalar em tempo real</div>
+                            <div class="sub anim" style="--d:2.4s">Um painel. O hospital inteiro.</div>
+                        </div>
+
+                        <!-- Cena 3 · leitos em tempo real -->
+                        <div class="scene s3">
+                            <div class="s3-text">
+                                <h3 class="sc-title anim" style="--d:.3s">Cada leito, em tempo real</h3>
+                                <p class="anim" style="--d:1s">Livre, ocupado ou em limpeza: você vê na hora.</p>
+                                <p class="anim" style="--d:1.8s">Quando o status muda, a equipe certa é avisada.</p>
+                            </div>
+                            <div class="panel anim" style="--d:.6s">
+                                <div class="panel-head"><span>UTI A</span><span class="live"><i></i>Atualizado agora</span></div>
+                                <div class="beds"><div class="bed occ"><b>L-01</b><span class="labs"><span class="lab">Ocupado</span></span></div><div class="bed occ"><b>L-02</b><span class="labs"><span class="lab">Ocupado</span></span></div><div class="bed free"><b>L-03</b><span class="labs"><span class="lab">Livre</span></span></div><div class="bed lim chg" style="--t:3.2s;--fb:#FEF3C7;--ff:#92400E;--tb:#D1FAE5;--tf:#065F46"><b>L-04</b><span class="labs"><span class="lab a">Limpeza</span><span class="lab b">Livre</span></span></div><div class="bed occ"><b>L-05</b><span class="labs"><span class="lab">Ocupado</span></span></div><div class="bed free"><b>L-06</b><span class="labs"><span class="lab">Livre</span></span></div><div class="bed occ chg" style="--t:6.6s;--fb:#FEE2E2;--ff:#991B1B;--tb:#FEF3C7;--tf:#92400E"><b>L-07</b><span class="labs"><span class="lab a">Ocupado</span><span class="lab b">Limpeza</span></span></div><div class="bed occ"><b>L-08</b><span class="labs"><span class="lab">Ocupado</span></span></div></div>
+                                <div class="toast-zone">
+                                    <div class="toast t1" style="--d:3.5s">
+                                        <div class="ic"><svg width="60%" height="60%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                                        <div><b>Leito L-04 liberado</b><span>Pronto-Socorro avisado</span></div>
+                                    </div>
+                                    <div class="toast t2" style="--d:6.9s">
+                                        <div class="ic blue"><svg width="60%" height="60%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+                                        <div><b>Alta confirmada no L-07</b><span>Limpeza avisada</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cena 4 · fluxo do paciente -->
+                        <div class="scene s4">
+                            <h3 class="sc-title anim" style="--d:.3s">Do primeiro atendimento à alta,<br>todos na mesma página</h3>
+                            <div class="flow">
+                                <div class="track"></div>
+                                <span class="dot-travel"></span>
+                                <div class="node" style="--n:1.4s">
+                                    <div class="circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg></div>
+                                    <b>Triagem</b>
+                                    <span class="note anim" style="--d:1.7s">Registro digital</span>
+                                </div>
+                                <div class="node" style="--n:3.8s">
+                                    <div class="circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+                                    <b>Pronto-Socorro</b>
+                                    <span class="note anim" style="--d:4.1s">Equipe avisada</span>
+                                </div>
+                                <div class="node" style="--n:6.2s">
+                                    <div class="circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8M2 14h20M2 18v2M22 18v2"/></svg></div>
+                                    <b>Leito</b>
+                                    <span class="note anim" style="--d:6.5s">Limpeza e enfermagem avisadas</span>
+                                </div>
+                                <div class="node" style="--n:8.6s">
+                                    <div class="circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+                                    <b>Alta</b>
+                                    <span class="note anim" style="--d:8.9s">Leito liberado para o próximo</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cena 5 · metas -->
+                        <div class="scene s5">
+                            <h3 class="sc-title anim" style="--d:.2s">Metas do programa piloto</h3>
+                            <div class="stats">
+                                <div class="stat anim pop" style="--d:.8s"><strong>-35%</strong><span>tempo de espera em prontos-socorros</span></div>
+                                <div class="stat anim pop" style="--d:1.6s"><strong>+28%</strong><span>eficiência no giro de leitos</span></div>
+                            </div>
+                            <p class="fine anim" style="--d:2.8s">Metas de projeto. Os resultados dependem da implantação em cada hospital.</p>
+                        </div>
+
+                        <!-- Cena 6 · convite -->
+                        <div class="scene s6">
+                            <h3 class="sc-title anim" style="--d:.2s">Seja um hospital piloto<br>do cuida+</h3>
+                            <p class="anim" style="--d:1s">Prioridade de teste e condições exclusivas de implantação.</p>
+                            <div class="pill anim pop" style="--d:2s">Cadastro logo abaixo</div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="poster" id="pcPoster" aria-label="Assistir demonstração guiada do cuida+">
+                        <div class="poster-logo">
+                            <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#fff"/><path d="M16 8V24M8 16H24" stroke="#0F52BA" stroke-width="4" stroke-linecap="round"/></svg>
+                            <div>cuida<span>+</span></div>
+                        </div>
+                        <div class="play-btn">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+                        </div>
+                        <span class="poster-label">Assistir Demonstração Guiada</span>
+                    </button>
+
+                    <div class="controls">
+                        <button type="button" class="pc-btn" id="pcPlay" aria-label="Reproduzir">
+                            <svg class="ico-play" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+                            <svg class="ico-pause" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="3" width="5" height="18" rx="1"/><rect x="14" y="3" width="5" height="18" rx="1"/></svg>
+                            <svg class="ico-replay" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                        </button>
+                        <div class="pwrap" id="pcWrap" role="slider" tabindex="0" aria-label="Progresso do vídeo" aria-valuemin="0" aria-valuemax="52" aria-valuenow="0">
+                            <div class="pbar" id="pcBar"><div class="pfill" id="pcFill"></div></div>
+                        </div>
+                        <span class="ptime" id="pcTime">0:00 / 0:52</span>
+                        <button type="button" class="pc-btn" id="pcFull" aria-label="Tela cheia">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <p class="video-note">Demonstração animada, sem áudio.</p>
+                <p class="sr-only">Transcrição: hospitais cheios enfrentam fila no pronto-socorro, leitos vazios esperando limpeza e informação espalhada em papel, rádio e telefone. O cuida+ reúne tudo em um painel: cada leito aparece como livre, ocupado ou em limpeza, e a equipe certa é avisada quando o status muda. Do primeiro atendimento à alta, todos ficam na mesma página. As metas do programa piloto são reduzir 35% o tempo de espera nos prontos-socorros e aumentar 28% a eficiência no giro de leitos. Cadastre-se para ser um hospital piloto.</p>
+            </div>
+        </section>
+
+        <!-- ==================== RELATOS (ilustrativos, identificados como tal) ==================== -->
+        <section id="depoimentos" class="section-padding">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Relatos do Dia a Dia da Gestão Hospitalar</h2>
+                    <p>Situações e expectativas que profissionais de saúde costumam descrever sobre o fluxo de pacientes e de leitos.</p>
+                </div>
+                <div class="relatos-note" role="note">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    <span>Os relatos abaixo são ilustrativos: retratam situações comuns na gestão hospitalar para validar a proposta de valor do cuida+ e não são depoimentos de clientes.</span>
+                </div>
+                <div class="testimonials-grid">
+                    <article class="testimonial-card">
+                        <div>
+                            <span class="relato-tag">Relato ilustrativo</span>
+                            <p class="testimonial-text">"A proposta do cuida+ de automatizar os alertas de giro de leito aborda diretamente o maior ponto cego da nossa operação diária."</p>
+                        </div>
+                        <div class="author-info">
+                            <div class="author-avatar" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+                            <div class="author-details">
+                                <h5>Direção médica</h5>
+                                <p>Perfil típico do setor</p>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="testimonial-card">
+                        <div>
+                            <span class="relato-tag">Relato ilustrativo</span>
+                            <p class="testimonial-text">"Reduzir o ruído de comunicação entre o pronto-socorro e a higienização é o sonho de qualquer enfermeiro gestor."</p>
+                        </div>
+                        <div class="author-info">
+                            <div class="author-avatar" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg></div>
+                            <div class="author-details">
+                                <h5>Enfermagem, gestão de fluxo</h5>
+                                <p>Perfil típico do setor</p>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="testimonial-card">
+                        <div>
+                            <span class="relato-tag">Relato ilustrativo</span>
+                            <p class="testimonial-text">"Um painel centralizado em tempo real é exatamente o tipo de tecnologia preditiva que falta nos hospitais hoje."</p>
+                        </div>
+                        <div class="author-info">
+                            <div class="author-avatar" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+                            <div class="author-details">
+                                <h5>Gestão operacional</h5>
+                                <p>Perfil típico do setor</p>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="testimonial-card">
+                        <div>
+                            <span class="relato-tag">Relato ilustrativo</span>
+                            <p class="testimonial-text">"Quando o paciente recebe alta, o aviso chega até nós por telefone ou rádio, e às vezes atrasa. Um alerta automático com o leito e a prioridade já resolveria boa parte do nosso vai e vem."</p>
+                        </div>
+                        <div class="author-info">
+                            <div class="author-avatar" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></div>
+                            <div class="author-details">
+                                <h5>Higienização e hotelaria</h5>
+                                <p>Perfil típico do setor</p>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="testimonial-card">
+                        <div>
+                            <span class="relato-tag">Relato ilustrativo</span>
+                            <p class="testimonial-text">"Na triagem, o paciente pergunta quanto tempo falta e eu não tenho como responder com segurança. Saber quantos leitos vão liberar nas próximas horas mudaria essa conversa."</p>
+                        </div>
+                        <div class="author-info">
+                            <div class="author-avatar" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+                            <div class="author-details">
+                                <h5>Triagem do pronto-socorro</h5>
+                                <p>Perfil típico do setor</p>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="testimonial-card">
+                        <div>
+                            <span class="relato-tag">Relato ilustrativo</span>
+                            <p class="testimonial-text">"Já vimos sistemas que exigiam trocar tudo. Interessa uma camada que conecte ao prontuário atual, sem parar a operação e sem virar mais uma tela para o time aprender."</p>
+                        </div>
+                        <div class="author-info">
+                            <div class="author-avatar" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg></div>
+                            <div class="author-details">
+                                <h5>TI e inovação hospitalar</h5>
+                                <p>Perfil típico do setor</p>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="planos" class="section-padding" style="background-color: #FFFFFF; border-top: 1px solid var(--border-color);">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Planos Sob Medida Para Sua Instituição</h2>
+                    <p>Previsão de investimento para o lançamento oficial. Cadastre-se hoje para garantir desconto de lançamento.</p>
+                </div>
+                <div class="pricing-grid">
+                    <div class="pricing-card">
+                        <div class="plan-name">Essencial</div>
+                        <div class="plan-desc">Para clínicas e hospitais de pequeno porte com até 50 leitos.</div>
+                        <div class="plan-price">R$ 1.490<span>/mês</span></div>
+                        <ul class="plan-features">
+                            <li>✓ Até 50 leitos monitorados</li>
+                            <li>✓ Monitoramento de fluxo básico</li>
+                            <li>✓ Painel web para gestão</li>
+                            <li>✓ Suporte em horário comercial</li>
+                        </ul>
+                        <a href="#cadastro" class="btn btn-secondary" style="width: 100%;">Garantir Acesso Prioritário</a>
+                    </div>
+
+                    <div class="pricing-card popular">
+                        <div class="pricing-badge">Mais Recomendado</div>
+                        <div class="plan-name">Profissional</div>
+                        <div class="plan-desc">Para hospitais de médio porte focados em alta eficiência operacional.</div>
+                        <div class="plan-price">R$ 3.290<span>/mês</span></div>
+                        <ul class="plan-features">
+                            <li>✓ Até 200 leitos monitorados</li>
+                            <li>✓ Alertas de gargalo em tempo real</li>
+                            <li>✓ Relatórios preditivos avançados</li>
+                            <li>✓ Integração com ERP/Prontuário</li>
+                            <li>✓ Suporte VIP 24/7</li>
+                        </ul>
+                        <a href="#cadastro" class="btn btn-primary" style="width: 100%;">Garantir Condição Especial</a>
+                    </div>
+
+                    <div class="pricing-card">
+                        <div class="plan-name">Enterprise</div>
+                        <div class="plan-desc">Para redes hospitalares e complexos de grande porte.</div>
+                        <div class="plan-price">Sob Consulta</div>
+                        <ul class="plan-features">
+                            <li>✓ Leitos ilimitados</li>
+                            <li>✓ Multi-unidades centralizado</li>
+                            <li>✓ Algoritmo de IA customizado</li>
+                            <li>✓ Gerente de conta dedicado</li>
+                        </ul>
+                        <a href="#cadastro" class="btn btn-secondary" style="width: 100%;">Falar com Consultor</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="cadastro" class="section-padding form-section">
+            <div class="container">
+                <div class="form-container-card">
+                    <!-- Dynamic Counter Box for Fake Door Social Proof -->
+                    <div class="counter-box">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        <div>
+                            <span class="counter-number" id="counter-value">284</span>
+                            <span style="color: var(--text-muted); font-weight: 600; font-size: 0.95rem;"> gestores já solicitaram demonstração antecipada</span>
+                        </div>
+                    </div>
+
+                    <div id="form-content">
+                        <div style="text-align: center; margin-bottom: 2rem;">
+                            <h2 style="font-size: 2rem; font-weight: 800; color: var(--text-main);">Seja um Hospital Piloto do cuida+</h2>
+                            <p style="color: var(--text-muted);">Preencha o formulário abaixo para garantir prioridade de teste no lançamento e condições exclusivas de implantação.</p>
+                        </div>
+
+                        <form id="leadForm" onsubmit="handleFormSubmit(event)">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="nome">Nome Completo *</label>
+                                    <input type="text" id="nome" class="form-control" placeholder="Ex: Dr. Roberto Silva" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">E-mail Corporativo *</label>
+                                    <input type="email" id="email" class="form-control" placeholder="roberto@hospital.com.br" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cargo">Seu Cargo / Função *</label>
+                                    <select id="cargo" class="form-control" required>
+                                        <option value="">Selecione...</option>
+                                        <option value="Diretor Hospitalar">Diretor(a) Hospitalar / Clínico</option>
+                                        <option value="Gestor de Operacoes">Gestor(a) de Operações</option>
+                                        <option value="Enfermeiro Chefe">Enfermeiro(a) Chefe</option>
+                                        <option value="TI e Inovacao">TI / Inovação Hospitalar</option>
+                                        <option value="Outro">Outro Cargo</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="hospital">Nome da Instituição / Hospital *</label>
+                                    <input type="text" id="hospital" class="form-control" placeholder="Ex: Hospital Santa Clara" required>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label for="leitos">Quantidade de Leitos (Aproximada) *</label>
+                                    <select id="leitos" class="form-control" required>
+                                        <option value="">Selecione a faixa...</option>
+                                        <option value="Ate 50">Até 50 leitos</option>
+                                        <option value="51 a 150">51 a 150 leitos</option>
+                                        <option value="151 a 300">151 a 300 leitos</option>
+                                        <option value="Mais de 300">Mais de 300 leitos</option>
+                                    </select>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label for="desafio">Qual o maior gargalo na sua gestão hospitalar hoje? (Opcional)</label>
+                                    <textarea id="desafio" class="form-control" placeholder="Ex: Demora na higienização de leitos, filas no pronto socorro..."></textarea>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary submit-btn">
+                                Entrar na Lista Prioritária de Demonstração
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Feedback visual de Sucesso após Envio do Formulário -->
+                    <div id="success-content" class="success-message">
+                        <div class="success-icon">
+                            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <h3>Solicitação Recebida com Sucesso!</h3>
+                        <p>Obrigado pelo seu interesse. Sua instituição foi incluída com prioridade na nossa lista VIP do <strong>cuida+</strong>. Em breve nossa equipe entrará em contato com a prévia da solução.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="#" class="footer-logo">cuida<span>+</span></a>
+                    <p style="font-size: 0.9rem; line-height: 1.6;">Plataforma de inteligência e gestão hospitalar em tempo real. Acelerando diagnósticos, otimizando leitos e salvando vidas com tecnologia.</p>
+                </div>
+                <div class="footer-links">
+                    <h5>Navegação</h5>
+                    <ul>
+                        <li><a href="#problema">O Problema</a></li>
+                        <li><a href="#solucao">A Solução</a></li>
+                        <li><a href="#demonstracao">Vídeo Demo</a></li>
+                        <li><a href="#planos">Planos SaaS</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h5>Contato</h5>
+                    <ul>
+                        <li><a href="#">contato@cuidamais.med.br</a></li>
+                        <li><a href="#">São Paulo - SP, Brasil</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h5>Legal</h5>
+                    <ul>
+                        <li><a href="#">Termos de Uso</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Conformidade LGPD</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 cuida+ Tecnologia da Saúde. Todos os direitos reservados. (Página Experimental de Validação de Mercado)</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* ==========================================================================
+           MVP FUMAÇA (SMOKE TEST) - LÓGICA DE CAPTURA E VALIDAÇÃO DE DEMANDA
+           ========================================================================== */
+
+        // 1. ANIMAÇÃO DO CONTADOR DE INTERESSE
+        function animateCounter() {
+            const counterElement = document.getElementById('counter-value');
+            let count = 240;
+            const target = 284;
+            const speed = 40;
+
+            const updateCount = () => {
+                if (count < target) {
+                    count++;
+                    counterElement.innerText = count;
+                    setTimeout(updateCount, speed);
+                } else {
+                    counterElement.innerText = target + "+";
+                }
+            };
+            updateCount();
+        }
+
+        // Executar animação ao carregar
+        window.addEventListener('DOMContentLoaded', () => {
+            animateCounter();
+        });
+
+        // 2. TRATAMENTO E INTERCEPTAÇÃO DO FORMULÁRIO (FAKE DOOR / SMOKE TEST)
+        function handleFormSubmit(event) {
+            event.preventDefault();
+
+            // Coleta dos dados do formulário
+            const leadData = {
+                nome: document.getElementById('nome').value,
+                email: document.getElementById('email').value,
+                cargo: document.getElementById('cargo').value,
+                hospital: document.getElementById('hospital').value,
+                leitos: document.getElementById('leitos').value,
+                desafio: document.getElementById('desafio').value,
+                timestamp: new Date().toISOString()
+            };
+
+            /* ----------------------------------------------------------------------
+               [INTEGRAÇÃO REAL BACKEND / CRM]:
+               Aqui entraria a requisição POST de envio real dos dados do Lead, por exemplo:
+               
+               fetch('https://api.cuidamais.com/v1/leads', {
+                   method: 'POST',
+                   headers: { 'Content-Type': 'application/json' },
+                   body: JSON.stringify(leadData)
+               });
+               
+               Ou via Webhook do HubSpot, RD Station, ActiveCampaign ou Supabase.
+               ---------------------------------------------------------------------- */
+
+            // Registra no console para validação técnica no Front-end
+            console.log("🔥 [MVP Fumaça - Novo Lead Capturado]:", leadData);
+
+            // Persistência local no navegador para testes de demonstração
+            let leadsExistentes = JSON.parse(localStorage.getItem('cuida_leads') || '[]');
+            leadsExistentes.push(leadData);
+            localStorage.setItem('cuida_leads', JSON.stringify(leadsExistentes));
+
+            // Atualização da UI para mensagem de agradecimento
+            document.getElementById('form-content').style.display = 'none';
+            document.getElementById('success-content').style.display = 'block';
+
+            // Incrementar contador visualmente
+            const counterElement = document.getElementById('counter-value');
+            counterElement.innerText = "285+";
+        }
+
+        // 3. PLAYER DO VÍDEO ANIMADO (cuida+ · 52 s)
+        //    Relógio próprio + cenas em HTML/CSS: sem arquivo de vídeo e sem serviços externos.
+        window.cuidaPlayer = (function () {
+            const el = document.getElementById('player');
+            if (!el) return null;
+
+            const stage = document.getElementById('stage');
+            const scenes = Array.from(stage.querySelectorAll('.scene'));
+            const starts = [0, 9, 15, 27, 38, 46]; // início de cada cena (s)
+            const total = 52;
+
+            const btnPlay = document.getElementById('pcPlay');
+            const btnFull = document.getElementById('pcFull');
+            const poster = document.getElementById('pcPoster');
+            const wrap = document.getElementById('pcWrap');
+            const bar = document.getElementById('pcBar');
+            const fill = document.getElementById('pcFill');
+            const timeEl = document.getElementById('pcTime');
+
+            let t = 0, playing = false, last = 0, cur = -1, raf = 0, dragging = false;
+
+            // marcas de capítulo na barra
+            starts.slice(1).forEach(s => {
+                const tick = document.createElement('span');
+                tick.className = 'ptick';
+                tick.style.left = (s / total * 100) + '%';
+                bar.appendChild(tick);
+            });
+
+            const fmt = s => { s = Math.floor(s); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
+            const idxAt = x => { let i = 0; starts.forEach((s, k) => { if (x >= s) i = k; }); return i; };
+
+            // escala: 1u = 1% da largura do vídeo
+            function fit() { el.style.setProperty('--u', (stage.clientWidth / 100) + 'px'); }
+            if (window.ResizeObserver) new ResizeObserver(fit).observe(stage); else window.addEventListener('resize', fit);
+            fit();
+
+            function activate(i, force) {
+                if (i === cur && !force) return;
+                const prev = cur;
+                cur = i;
+                scenes.forEach((s, k) => {
+                    if (k === i) {
+                        s.classList.remove('on', 'active');
+                        void s.offsetWidth; // reinicia as animações da cena
+                        s.classList.add('on', 'active');
+                    } else {
+                        s.classList.remove('active');
+                        if (k === prev && !force) {
+                            setTimeout(() => { if (cur !== k) s.classList.remove('on'); }, 700);
+                        } else {
+                            s.classList.remove('on');
+                        }
+                    }
+                });
+            }
+
+            function ui() {
+                fill.style.width = (t / total * 100) + '%';
+                timeEl.textContent = fmt(t) + ' / ' + fmt(total);
+                wrap.setAttribute('aria-valuenow', Math.floor(t));
+            }
+
+            function setState() {
+                el.classList.toggle('playing', playing);
+                el.classList.toggle('paused', !playing);
+                el.classList.toggle('ended', !playing && t >= total);
+                btnPlay.setAttribute('aria-label', playing ? 'Pausar' : (t >= total ? 'Assistir de novo' : 'Reproduzir'));
+            }
+
+            function seek(x) {
+                t = Math.max(0, Math.min(total - 0.01, x));
+                el.classList.add('started');
+                const i = idxAt(t);
+                activate(i, true);
+                const local = (t - starts[i]) * 1000;
+                scenes[i].getAnimations({ subtree: true }).forEach(a => { try { a.currentTime = local; } catch (e) {} });
+                ui();
+                setState();
+            }
+
+            function frame(now) {
+                if (!playing) return;
+                t += (now - last) / 1000;
+                last = now;
+                if (t >= total) {
+                    t = total;
+                    playing = false;
+                    ui();
+                    setState();
+                    return;
+                }
+                const i = idxAt(t);
+                if (i !== cur) activate(i);
+                ui();
+                raf = requestAnimationFrame(frame);
+            }
+
+            function play() {
+                if (playing) return;
+                if (t >= total - 0.05) seek(0);
+                else if (cur === -1) seek(t);
+                el.classList.add('started');
+                playing = true;
+                last = performance.now();
+                setState();
+                raf = requestAnimationFrame(frame);
+            }
+
+            function pause() {
+                playing = false;
+                cancelAnimationFrame(raf);
+                setState();
+            }
+
+            btnPlay.addEventListener('click', () => (playing ? pause() : play()));
+            poster.addEventListener('click', play);
+
+            // barra de progresso (clique, arraste e teclado)
+            const ratio = e => {
+                const r = bar.getBoundingClientRect();
+                return Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
+            };
+            wrap.addEventListener('pointerdown', e => {
+                dragging = true;
+                wrap.setPointerCapture(e.pointerId);
+                seek(ratio(e) * total);
+            });
+            wrap.addEventListener('pointermove', e => { if (dragging) seek(ratio(e) * total); });
+            const endDrag = () => { dragging = false; };
+            wrap.addEventListener('pointerup', endDrag);
+            wrap.addEventListener('pointercancel', endDrag);
+            wrap.addEventListener('keydown', e => {
+                if (e.key === 'ArrowRight') { e.preventDefault(); seek(t + 5); }
+                if (e.key === 'ArrowLeft') { e.preventDefault(); seek(t - 5); }
+                if (e.key === ' ') { e.preventDefault(); playing ? pause() : play(); }
+            });
+
+            // tela cheia (quando o navegador permite)
+            const reqFull = el.requestFullscreen || el.webkitRequestFullscreen;
+            if (!reqFull) {
+                btnFull.style.display = 'none';
+            } else {
+                btnFull.addEventListener('click', () => {
+                    const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+                    if (fsEl) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); }
+                    else { reqFull.call(el); }
+                });
+            }
+
+            setState();
+            return { play: play, pause: pause, seek: seek };
+        })();
+    </script>
+</body>
+</html>
